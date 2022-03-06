@@ -14,7 +14,7 @@ The home page to display the list of tasks is as follows:
 
 ![list](https://user-images.githubusercontent.com/44062322/156936917-5e5fc018-bf22-490d-bf3f-cc707f1e831b.png)
 
-```Create Task``` is used to create a new task. Whereas there are options to update or delete a task as well. Creating a tasks requires addin the title, priority (Low, Medium or High) if the task as well as Labels where the labels are optional.
+```Create Task``` is used to create a new task. Whereas there are options to update or delete a task as well. Creating a tasks requires addin the title, priority (Low, Medium or High) if the task as well as Labels where the labels are optional. Multiple labels could be selected for a task.
 
 
 ![create](https://user-images.githubusercontent.com/44062322/156937192-6e0fa871-2c0c-4351-a925-eea10bec48b6.png)
