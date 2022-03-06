@@ -1,57 +1,32 @@
+<h1 style="text-align: center; color: rgb(1, 119, 50);">To Do</h1>
+<h2 style="text-align: center; color: rgb(0, 0, 0);">Create task</h2>
 
-
-<form action="" method="post">
+<form action="" method="post" style="text-align: center">
    {{ form.hidden_tag() }}
    <div>
-      {{ form.title(placeholder="title",
-      style='width: 50%;
-      font-weight: bold;
-      padding: 12px 20px ;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box') }}
+      {{ form.title(placeholder="title") }}
       {% for error in form.title.errors %}
       <p>{{ error }}</p>
       {% endfor %}
    </div>
    <br>
    <div>
-      {{ form.priority(placeholder="priority",
-      style='width: 50%;
-      font-weight: bold;
-      padding: 12px 20px ;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box') }}
+      {{ form.priority(placeholder="priority") }}
       {% for error in form.priority.errors %}
       <p>{{ error }}</p>
       {% endfor %}
    </div>
+   <br>
    <div>
-    {{ form.labels(placeholder="label",
-    style='width: 50%;
-    font-weight: bold;
-    padding: 12px 20px ;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box') }}
+    {{ form.labels(placeholder="label") }}
     {% for error in form.labels.errors %}
     <p>{{ error }}</p>
     {% endfor %}
  </div>
   
-   <p>{{ form.submit(style ='background-color: #4CAF50;
-      color: white;
-      width: 50%;
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 4px') }}
+   <p>{{ form.submit() }}
    </p>
 </form>
 {% for message in get_flashed_messages() %}
-<p style="color: red;">Error : {{ message }}</p>
+<p style="text-align: center; color: red;">Error : {{ message }}</p>
 {% endfor %}
