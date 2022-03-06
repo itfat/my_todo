@@ -3,7 +3,7 @@ In order to run the code run you justt need to run the following command:
 
 ```pip install -r requirements.txt```
 
-All the required packages are added in the requirements file. After running the above mentioned command you can then run the app simply by writing ```python app.py``` in the terminal.
+All the required packages are added in the requirements file. After running the above mentioned command you can then run the app simply by writing ```python app.py``` in the terminal. After writing this in the terminal you need to click on ```http://127.0.0.1:5000/```. It will direct you to webpage (index page in to do's case).
 The index page contains the links to register or login a user. Login and SignUp pages look like the pictures below:
 
 ![login](https://user-images.githubusercontent.com/44062322/156936842-c170ee60-17ca-4801-a273-447ee5221b21.png)
