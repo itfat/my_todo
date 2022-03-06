@@ -1,14 +1,16 @@
+from asyncio import Task
+from cProfile import label
 from flask import Flask, url_for, render_template, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, PickleType
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, TaskForm
 import os
+from sqlalchemy.ext.mutable import MutableList
 
 
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.sqlite3'
@@ -31,20 +33,25 @@ class Users(UserMixin, db.Model):
     def check_password(self,password):
       return check_password_hash(self.password_hash,password)
 
-# class Tasks(db.Model):
-#     id = id = db.Column('task_id', db.Integer, primary_key = True)
-#     title = db.Column(db.String(100), nullable=False)
-#     priority = db.Column(db.String(100), nullable=False)
-#     labels = db.Column(db.String(100), nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+class Tasks(db.Model):
+    id = id = db.Column('task_id', db.Integer, primary_key = True)
+    title = db.Column(db.String(100), nullable=False)
+    priority = db.Column(db.String(100), nullable=False)
+    labels = db.Column(MutableList.as_mutable(PickleType),
+                                    default=[])
+    # user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
 
 
 @app.before_first_request
 def create_tables():
     db.create_all()
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 @app.route('/home')
 def home():
+    
     return render_template('home.html')
 
 
@@ -85,7 +92,19 @@ def protected():
 # @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
+@app.route('/create', methods=['GET', 'POST'])
+def add_task():
+    form = TaskForm()
+    if form.validate_on_submit():
+        task = Tasks(title =form.title.data, priority = form.priority.data, labels = form.labels.data)
+        db.session.add(task)
+        db.session.commit()
+        print(db.session.task)
+        return redirect(url_for('home'))
+
+    return render_template('task.html', form=form)
+    
 if __name__ == '__main__':
    app.run(debug = True)
