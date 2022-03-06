@@ -39,7 +39,7 @@
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
-      <h3 class="flashes" style="color:#045c1e">{{ message }}</h3>
+      <h2 class="flashes" style="color:#045c1e">{{ message }}</h2>
     {% endfor %}
   {% endif %}
 {% endwith %}
@@ -52,7 +52,7 @@
         <th>Title</th>
         <th>Priority</th>
         <th>Labels</th>
-        <th>Image</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>

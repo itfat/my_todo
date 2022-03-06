@@ -121,9 +121,10 @@ def show_task():
 
 @app.route('/delete/<id>/<user>', methods=('GET', 'POST'))
 def delete_task(id, user):
-    if db.session['current_user'] == user:
+    if session['current_user'] == user:
         me = Tasks.query.get(id)
-        db.session.edelete(me)
+        print(me)
+        db.session.delete(me)
         db.session.commit()
         return redirect(url_for('show_task'))
     flash('You are not a valid user to delete this task')
