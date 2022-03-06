@@ -1,5 +1,6 @@
 from asyncio import Task
 from cProfile import label
+from inspect import stack
 from flask import Flask, url_for, render_template, redirect, flash, request, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey, PickleType
@@ -80,14 +81,10 @@ def login():
             session['current_user'] = user.username
             session['user_available'] = True
             next = request.args.get("next")
-            return redirect(next or url_for('home'))
+            return redirect(next or url_for('show_task'))
         flash('Invalid email address or Password.')    
     return render_template('login.html', form=form)
 
-# @app.route("/forbidden",methods=['GET', 'POST'])
-# @login_required
-# def protected():
-#     return redirect(url_for('forbidden.html'))
 
 @app.route("/logout")
 # @login_required
@@ -100,12 +97,11 @@ def logout():
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_task():
-    if session['user_available']:
+    if 'user_available' in session:
         form = TaskForm()
-        us = Users.query.filter_by(username=db.session['current_user']).first()
-        task = Tasks(title =form.title.data, priority = form.priority.data, labels = form.labels.data)
+        user = Users.query.filter_by(username=session['current_user']).first()
         if request.method == 'POST':
-            task = Tasks(title =form.title.data, priority = form.priority.data, labels = form.labels.data)
+            task = Tasks(title =form.title.data, priority = form.priority.data, labels = form.labels.data, user_id=user.id)
             db.session.add(task)
             db.session.commit()
             return redirect(url_for('show_task'))
@@ -124,14 +120,14 @@ def show_task():
     return redirect(url_for('index'))
 
 @app.route('/delete/<id>/<user>', methods=('GET', 'POST'))
-def delete_post(id, user):
+def delete_task(id, user):
     if db.session['current_user'] == user:
         me = Tasks.query.get(id)
-        db.session.delete(me)
+        db.session.edelete(me)
         db.session.commit()
-        return redirect(url_for('show_posts'))
+        return redirect(url_for('show_task'))
     flash('You are not a valid user to delete this task')
-    return redirect(url_for('show_posts'))
+    return redirect(url_for('show_task'))
 
 
 @app.route('/update/<id>/<user>', methods=('GET', 'POST'))
@@ -141,13 +137,13 @@ def update_post(id, user):
         task = TaskForm(obj=me)
         if request.method == 'POST':
             stask = Tasks.query.get(id)
-            stask.title = stask.title.data
-            stask.description = stask.description.data
+            stask.title = task.title.data
+            stask.priority = task.priority.data
             db.session.commit()
-            return redirect(url_for('show_posts'))
+            return redirect(url_for('show_task'))
         return render_template('update.html', task=task)
-    flash('You are not a valid user to Edit this Post')
-    return redirect(url_for('show_posts'))
+    flash('You are not a valid user to edit this task')
+    return redirect(url_for('show_task'))
 
 if __name__ == '__main__':
    app.run(debug = True)

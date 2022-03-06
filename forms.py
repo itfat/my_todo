@@ -18,6 +18,6 @@ class LoginForm(FlaskForm):
 
 class TaskForm(FlaskForm):
     title = StringField('Title',validators=[DataRequired()])
-    priority = SelectField(u'Priority', choices=[('l', 'Low'), ('m', 'Medium'), ('h', 'High')])
+    priority = SelectField(u'Priority', choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')])
     labels = SelectMultipleField(u'Labels', choices=[('food', 'Food'), ('cloth', 'Clothing'), ('clean', 'Cleaning'), ('entertain', 'Entertainment'), ('room', 'Room Maintainance')])
     submit = SubmitField('Create Task')
