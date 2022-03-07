@@ -58,7 +58,7 @@
     <tbody>
       {% for i in tasks %}
       {% for j in user %}
-      {% if j.id == i.user_id %}
+      {% if j.id == i.user_id and j.id==current_user.id%}
       <tr>
        
         <td>{{i.title}}</td>
